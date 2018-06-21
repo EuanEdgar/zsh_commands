@@ -34,5 +34,8 @@ alias gulpit="gulp && gulp watch"
 alias hosts="subl /etc/hosts"
 alias refresh_dns="sudo dscacheutil -flushcache && sudo killall -HUP mDNSResponder"
 
+#Tools
+alias devserve="ruby apps/php_serve.rb"
+
 #AUTROLOAD!
 autoload -Uz compinit && compinit
