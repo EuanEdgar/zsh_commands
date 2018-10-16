@@ -1,9 +1,22 @@
 #!/bin/bash
 
+# Exit codes
+exit_teacup_not_empty=1
+exit_arguments_missing=2
+exit_file_not_found=3
+
+teacup_location='/tmp/ee_swap'
+
 # if cleanup not performed
-if [[ -a /tmp/ee_swap ]] ; then
-  echo '/tmp/ee_swap is not empty'
-  exit 1
+if [[ -a $teacup_location ]] ; then
+  echo "$teacup_location is not empty"
+  exit $exit_teacup_not_empty
+fi
+
+# if arguments missing
+if [ -z $1 ] || [ -z $2 ]; then
+  echo "swap: Swap expects exactly two arguments"
+  exit $exit_arguments_missing
 fi
 
 # if $1 is neither a file nor a directory
@@ -20,14 +33,14 @@ fi
 
 if [[ $file_not_found ]] ; then
   unset file_not_found
-  exit 2
+  exit $exit_file_not_found
 fi
 
 # teacup
-cp $1 /tmp/ee_swap
+cp $1 $teacup_location
 rm -rf $1
 cp $2 $1
-cp /tmp/ee_swap $2
+cp $teacup_location $2
 
 # cleanup
-rm -rf /tmp/ee_swap
+rm -rf $teacup_location
