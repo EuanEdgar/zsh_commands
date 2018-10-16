@@ -20,16 +20,6 @@ alias routes="bundle exec rake routes | grep"
 alias rsp="be rspec --format doc"
 alias rgrep="ps aux | grep rspec"
 
-#Docker commands
-alias dicker="docker"
-alias dicker-compose="docker-compose"
-alias cocker="docker"
-alias cocker-compose="docker-compose"
-
-#Git commands
-alias gi="git"
-alias gt="git"
-
 #Sublime
 alias subl.="subl ."
 
@@ -46,6 +36,10 @@ alias irb="pry"
 #DNS
 alias hosts="subl /etc/hosts"
 alias refresh_dns="sudo dscacheutil -flushcache && sudo killall -HUP mDNSResponder"
+
+#Fuck
+eval $(thefuck --alias)
+alias fuck="fuck -r"
 
 #Tools
 alias devserve="ruby $COMMANDS_PATH/apps/php_serve.rb"

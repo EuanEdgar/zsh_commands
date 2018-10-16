@@ -3,6 +3,21 @@ check_if_installed(){
   installed=$?
 }
 
+check_if_installed brew
+if [[ $installed = 0 ]]; then
+  os="mac"
+else
+  check_if_installed apt
+  if [[ $installed = 0 ]]; then
+    os="ubuntu"
+  fi
+fi
+
+
+if [[ $os = "ubuntu" ]]; then
+  sudo apt update
+fi
+
 check_if_installed npm
 if [[ $installed = 1 ]]; then
   echo "install npm to continue"
@@ -43,4 +58,21 @@ if [[ $installed = 1 ]]; then
   echo "continuing..."
 fi
 
+unset installed
+
+check_if_installed thefuck
+if [[ $installed = 1 ]]; then
+  if [[ $os = "mac" ]]; then
+    brew install thefuck
+  elif [[ $os = "ubuntu" ]]; then
+    sudo apt install python3-dev python3-pip
+    sudo pip3 install thefuck
+  fi
+fi
+
+check_if_installed thefuck
+if [[ $installed = 1 ]]; then
+  echo "thefuck install failed"
+  echo "continuing..."
+fi
 unset installed
