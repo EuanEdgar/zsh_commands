@@ -1,3 +1,5 @@
+# This has been replaced with php_serve.sh because bash is more performant
+
 port = ARGV[0]
 
 ifconfig = `ifconfig | grep 192`

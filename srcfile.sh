@@ -42,7 +42,7 @@ eval $(thefuck --alias)
 alias fuck="fuck -r"
 
 #Tools
-alias devserve="ruby $COMMANDS_PATH/apps/php_serve.rb"
+alias devserve="$COMMANDS_PATH/apps/php_serve.sh"
 
 alias rb="ruby $COMMANDS_PATH/apps/rb.rb"
 alias escape_spaces="rb -l \"gsub(' ', '\ ')\""
@@ -56,9 +56,13 @@ if [[ $TERM_PROGRAM = 'iTerm.app' ]]; then
 fi
 
 # NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+nvmAvilable=$(which nvm && echo 0)
+if [[ !nvmAvilable = 0 ]]; then
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+fi
+unset nvmAvilable
 
 #AUTROLOAD!
 autoload -Uz compinit && compinit

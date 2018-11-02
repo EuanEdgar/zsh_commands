@@ -78,6 +78,7 @@ fi
 unset installed
 
 chmod +x "$COMMANDS_PATH/apps/swap.sh"
+chmod +x "$COMMANDS_PATH/apps/php_serve.sh"
 
 if [[ $TERM_PROGRAM = 'iTerm.app' ]]; then
   chmod +x "$COMMANDS_PATH/apps/colour.sh"
