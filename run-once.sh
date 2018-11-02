@@ -76,3 +76,9 @@ if [[ $installed = 1 ]]; then
   echo "continuing..."
 fi
 unset installed
+
+chmod +x "$COMMANDS_PATH/apps/swap.sh"
+
+if [[ $TERM_PROGRAM = 'iTerm.app' ]]; then
+  chmod +x "$COMMANDS_PATH/apps/colour.sh"
+fi

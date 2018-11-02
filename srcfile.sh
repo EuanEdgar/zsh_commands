@@ -51,5 +51,14 @@ alias swap="$COMMANDS_PATH/apps/swap.sh"
 
 alias prettyping="$COMMANDS_PATH/apps/prettyping --nolegend"
 
+if [[ $TERM_PROGRAM = 'iTerm.app' ]]; then
+  alias colour="$COMMANDS_PATH/apps/colour.sh"
+fi
+
+# NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 #AUTROLOAD!
 autoload -Uz compinit && compinit
