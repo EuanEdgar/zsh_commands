@@ -1,7 +1,4 @@
-#!/usr/local/bin/bash
-# Use usr/local/bin/bash becasue it is of higher version than /bin/bash
-# This is because bash 4.x has a license that apple can not use, therefore
-# they package 3.x still
+#!/bin/bash
 
 usage() {
   echo "Colour:
@@ -23,7 +20,8 @@ usage() {
     - white"
 }
 
-exit_missing_args=$1
+exit_missing_args=1
+exit_bad_hex=2
 
 this=$0
 
@@ -43,6 +41,12 @@ getHex(){
         d) digit=13 ;;
         e) digit=14 ;;
         f) digit=15 ;;
+        A) digit=10 ;;
+        B) digit=11 ;;
+        C) digit=12 ;;
+        D) digit=13 ;;
+        E) digit=14 ;;
+        F) digit=15 ;;
       esac
       echo $digit
     }
@@ -58,6 +62,12 @@ getHex(){
   }
 
   hex=$1
+
+  if [[ ! ${hex:1:6} =~ ^[0-9a-fA-F]{6} ]]; then
+    echo "Colour: Hex strings must be in the format #[red:Hh][green:Hh][blue:Hh]"
+    echo "  Example: #00c5B5"
+    exit $exit_bad_hex
+  fi
 
   red=${hex:1:2}
   green=${hex:3:2}
@@ -75,7 +85,9 @@ preset=$1
 
 case $preset in
   -h)
-    ;&
+    usage
+    exit 0
+    ;;
   --help)
     usage
     exit 0
@@ -118,19 +130,21 @@ red=$1
 green=$2
 blue=$3
 
-if [ -z $red ] ; then
+missing_args() {
   usage
   exit $exit_missing_args
+}
+
+if [ -z $red ] ; then
+  missing_args
 fi
 
 if [ -z $green ] ; then
-  usage
-  exit $exit_missing_args
+  missing_args
 fi
 
 if [ -z $blue ] ; then
-  usage
-  exit $exit_missing_args
+  missing_args
 fi
 
 # Echo iTerm-specific escape sequences to change colour
