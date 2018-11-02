@@ -9,12 +9,15 @@ usage() {
   This only functions in iTerm2.
   Usage: colour [colour preset]
   Usage: colour [red: 0-255] [green: 0-255] [blue: 0-255]
+  Usage: colour #[hex colour string]
   Presets:
     - black
     - red
-    - green
+    - orange
     - yellow
+    - green
     - blue
+    - purple
     - magenta
     - cyan
     - white"
@@ -28,6 +31,45 @@ colour(){
   $this $1 $2 $3
   exit 0
 }
+
+getHex(){
+  hexToDec(){
+    getDigit(){
+      digit=$1
+      case $digit in
+        a) digit=10 ;;
+        b) digit=11 ;;
+        c) digit=12 ;;
+        d) digit=13 ;;
+        e) digit=14 ;;
+        f) digit=15 ;;
+      esac
+      echo $digit
+    }
+
+    number=$1
+    digit1=${number:0:1}
+    digit2=${number:1:1}
+
+    digit1=$(getDigit $digit1)
+    digit2=$(getDigit $digit2)
+
+    expr $digit1 \* 16 + $digit2
+  }
+
+  hex=$1
+
+  red=${hex:1:2}
+  green=${hex:3:2}
+  blue=${hex:5:2}
+
+  colour $(hexToDec $red) $(hexToDec $green) $(hexToDec $blue)
+  exit 0
+}
+
+if [[ $(echo $1 | head -c 1) = '#' ]]; then
+  getHex $1
+fi
 
 preset=$1
 
