@@ -1,11 +1,10 @@
 COMMANDS_PATH="$HOME/.zsh_commands"
 
-#Git complete/prompt
 export PATH="$COMMANDS_PATH/zsh-git-prompt/src/.bin:$PATH"
 source $COMMANDS_PATH/zsh-git-prompt/zshrc.sh
-PROMPT='%m%b$(git_super_status)%# '
-zstyle ':completion:*:*:git:*' script $COMMANDS_PATH/git-tab-complete/git-completion.bash
-fpath=(COMMANDS_PATH/git-tab-complete/ $fpath)
+# GIT_PROMPT_EXECUTABLE='haskell'
+setopt PROMPT_SUBST
+PROMPT='%m$(git_super_status)%# '
 
 #Git commands
 alias delete-merged="git branch --merged >/tmp/merged-branches && vi /tmp/merged-branches && xargs git branch -d </tmp/merged-branches; rm /tmp/merged-branches"
