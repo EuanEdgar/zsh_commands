@@ -4,13 +4,38 @@ export PATH="$COMMANDS_PATH/zsh-git-prompt/src/.bin:$PATH"
 source $COMMANDS_PATH/zsh-git-prompt/zshrc.sh
 # GIT_PROMPT_EXECUTABLE='haskell'
 setopt PROMPT_SUBST
-PROMPT='%m$(git_super_status)%# '
+
+function get_status {
+  if [ $TERM_PROGRAM = iTerm.app ]; then
+    git_root_dir=$(git rev-parse --show-toplevel 2>/dev/null)
+    if [ $? != 0 ]; then
+      s='iTerm2'
+    else
+      s=$(basename $git_root_dir)
+    fi
+
+    ~/.iterm2/it2setkeylabel set status $s
+  fi
+}
+
+function git_super_status_wrapper {
+  if [ -d .git ] || git rev-parse --git-dir > /dev/null 2>&1; then
+    git_super_status
+  fi
+}
+
+PROMPT='%{$(get_status)%}%m$(git_super_status_wrapper)%# '
+# PROMPT='%m$(git_super_status)%# '
 
 #Git commands
 alias delete-merged="git branch --merged >/tmp/merged-branches && vi /tmp/merged-branches && xargs git branch -d </tmp/merged-branches; rm /tmp/merged-branches"
 
 #cd commands
 alias htdocs="cd ~/../../Applications/MAMP/htdocs"
+
+#rbenv
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
 
 #Rails commands
 alias be="bundle exec"
@@ -20,6 +45,7 @@ alias rsp="be rspec --format doc"
 alias rgrep="ps aux | grep rspec"
 
 #Sublime
+alias subl="atom"
 alias subl.="subl ."
 
 #Shut down
