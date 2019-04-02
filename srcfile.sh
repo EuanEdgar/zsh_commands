@@ -2,19 +2,23 @@ COMMANDS_PATH="$HOME/.zsh_commands"
 
 export PATH="$COMMANDS_PATH/zsh-git-prompt/src/.bin:$PATH"
 source $COMMANDS_PATH/zsh-git-prompt/zshrc.sh
-# GIT_PROMPT_EXECUTABLE='haskell'
 setopt PROMPT_SUBST
 
 function get_status {
   if [ $TERM_PROGRAM = iTerm.app ]; then
     git_root_dir=$(git rev-parse --show-toplevel 2>/dev/null)
     if [ $? != 0 ]; then
-      s='iTerm2'
+      if [[ "${PWD##$HOME}" != "${PWD}" ]]; then
+        s="~${PWD#"$HOME"}"
+      else
+        s=$PWD
+      fi
     else
       s=$(basename $git_root_dir)
+      s="$(basename $git_root_dir)${PWD#"$git_root_dir"}"
     fi
 
-    ~/.iterm2/it2setkeylabel set status $s
+    set_status $s 'prompt'
   fi
 }
 
@@ -76,8 +80,25 @@ alias swap="$COMMANDS_PATH/apps/swap.sh"
 
 alias prettyping="$COMMANDS_PATH/apps/prettyping --nolegend"
 
+alias cat="bat"
+
 if [[ $TERM_PROGRAM = 'iTerm.app' ]]; then
   alias colour="$COMMANDS_PATH/apps/colour.sh"
+
+  function set_status {
+    if [[ ! -z  "$2" ]] && [ $2 = 'prompt' ]; then
+      if [ -z $CUSTOM_STATUS ]; then
+        ~/.iterm2/it2setkeylabel set status $1
+      fi
+    else
+      export CUSTOM_STATUS='true'
+      ~/.iterm2/it2setkeylabel set status $1
+    fi
+  }
+
+  function clear_status {
+    export CUSTOM_STATUS=''
+  }
 fi
 
 # NVM

@@ -77,6 +77,24 @@ if [[ $installed = 1 ]]; then
 fi
 unset installed
 
+check_if_installed bat
+if [[ $installed = 1 ]]; then
+  if [[ $os = "mac" ]]; then
+    brew install bat
+
+    check_if_installed bat
+    if [[ $installed ]]; then
+      echo "bat install failed\
+      continuing..."
+    fi
+  elif [[ $ox = "ubuntu" ]]; then
+    echo "To install bat (cat replacement), follow instructions here:\
+    https://github.com/sharkdp/bat#installation"
+  fi
+fi
+
+unset installed
+
 chmod +x "$COMMANDS_PATH/apps/swap.sh"
 chmod +x "$COMMANDS_PATH/apps/php_serve.sh"
 
