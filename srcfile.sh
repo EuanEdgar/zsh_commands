@@ -126,3 +126,5 @@ autoload -Uz compinit && compinit
 
 get_status
 colour 255 255 255
+
+git config --global core.excludesfile ~/.gitignore_global

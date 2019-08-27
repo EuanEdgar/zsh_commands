@@ -104,5 +104,4 @@ fi
 
 if [ ! -f ~/.gitignore_global ]; then
   touch ~/.gitignore_global
-  git config --global core.excludesfile ~/.gitignore_global
 fi
