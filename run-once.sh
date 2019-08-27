@@ -101,3 +101,8 @@ chmod +x "$COMMANDS_PATH/apps/php_serve.sh"
 if [[ $TERM_PROGRAM = 'iTerm.app' ]]; then
   chmod +x "$COMMANDS_PATH/apps/colour.sh"
 fi
+
+if [ ! -f ~/.gitignore_global ]; then
+  touch ~/.gitignore_global
+  git config --global core.excludesfile ~/.gitignore_global
+fi

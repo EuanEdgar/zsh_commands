@@ -87,6 +87,8 @@ alias prettyping="$COMMANDS_PATH/apps/prettyping --nolegend"
 
 alias cat="bat"
 
+source "$COMMANDS_PATH/apps/cd.sh"
+
 alias backup="$COMMANDS_PATH/apps/backup.sh"
 
 if [[ $TERM_PROGRAM = 'iTerm.app' ]]; then
