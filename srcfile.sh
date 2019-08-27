@@ -14,11 +14,17 @@ function get_status {
         s=$PWD
       fi
     else
-      s=$(basename $git_root_dir)
       s="$(basename $git_root_dir)${PWD#"$git_root_dir"}"
     fi
 
     set_status $s 'prompt'
+  fi
+}
+
+update_colour() {
+  if [ ! -z $RESET_COLOUR ]; then
+    colour prev
+    export RESET_COLOUR=''
   fi
 }
 
@@ -28,8 +34,7 @@ function git_super_status_wrapper {
   fi
 }
 
-PROMPT='%{$(get_status)%}%m$(git_super_status_wrapper)%# '
-# PROMPT='%m$(git_super_status)%# '
+PROMPT='%{$(update_colour)%}%{$(get_status)%}%m$(git_super_status_wrapper)%# '
 
 #Git commands
 alias delete-merged="git branch --merged >/tmp/merged-branches && vi /tmp/merged-branches && xargs git branch -d </tmp/merged-branches; rm /tmp/merged-branches"
@@ -49,8 +54,8 @@ alias rsp="be rspec --format doc"
 alias rgrep="ps aux | grep rspec"
 
 #Sublime
-alias subl="atom"
-alias subl.="subl ."
+alias subl="echo It\'s atom now!"
+alias subl.="echo It\'s atom now!"
 
 #Shut down
 alias die="shutdown now"
@@ -63,7 +68,7 @@ alias _irb="irb"
 alias irb="pry"
 
 #DNS
-alias hosts="subl /etc/hosts"
+alias hosts="atom /etc/hosts"
 alias refresh_dns="sudo dscacheutil -flushcache && sudo killall -HUP mDNSResponder"
 
 #Fuck
@@ -82,8 +87,12 @@ alias prettyping="$COMMANDS_PATH/apps/prettyping --nolegend"
 
 alias cat="bat"
 
+alias backup="$COMMANDS_PATH/apps/backup.sh"
+
 if [[ $TERM_PROGRAM = 'iTerm.app' ]]; then
-  alias colour="$COMMANDS_PATH/apps/colour.sh"
+  # alias colour="$COMMANDS_PATH/apps/colour.sh"
+  source "$COMMANDS_PATH/apps/colour2.sh"
+  source "$COMMANDS_PATH/apps/preexec.sh"
 
   function set_status {
     if [[ ! -z  "$2" ]] && [ $2 = 'prompt' ]; then
@@ -112,3 +121,6 @@ unset nvmAvilable
 
 #AUTROLOAD!
 autoload -Uz compinit && compinit
+
+get_status
+colour 255 255 255
