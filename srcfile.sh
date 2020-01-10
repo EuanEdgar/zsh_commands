@@ -1,7 +1,17 @@
 COMMANDS_PATH="$HOME/.zsh_commands"
 
 export PATH="$COMMANDS_PATH/zsh-git-prompt/src/.bin:$PATH"
-source $COMMANDS_PATH/zsh-git-prompt/zshrc.sh
+
+if [ -e /usr/local/opt/zsh-git-prompt/zshrc.sh ]; then
+  source /usr/local/opt/zsh-git-prompt/zshrc.sh
+else
+  # Fall back to cloned repo
+  source $COMMANDS_PATH/zsh-git-prompt/zshrc.sh
+fi
+
+ZSH_THEME_GIT_PROMPT_PREFIX=" %1d/("
+ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[green]%}%{+%G%}"
+ZSH_THEME_GIT_PROMPT_CHANGED="%{$fg[red]%}%{~%G%}"
 setopt PROMPT_SUBST
 
 function get_status {

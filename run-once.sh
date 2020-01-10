@@ -79,6 +79,14 @@ unset installed
 
 check_if_installed brew
 if [[ $installed = 0 ]]; then
+  if [ ! -e /usr/local/opt/zsh-git-prompt/zshrc.sh ]; then
+    brew install zsh-git-prompt
+  fi
+fi
+unset $installed
+
+check_if_installed brew
+if [[ $installed = 0 ]]; then
   if [ ! -e /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
     brew install zsh-syntax-highlighting
   fi
