@@ -36,8 +36,12 @@ function git_super_status_wrapper {
 
 PROMPT='%{$(update_colour)%}%{$(get_status)%}%m$(git_super_status_wrapper)%# '
 
+if [ -s /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
+  source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+
 #Git commands
-alias delete-merged="git branch --merged >/tmp/merged-branches && vi /tmp/merged-branches && xargs git branch -d </tmp/merged-branches; rm /tmp/merged-branches"
+git config --global alias.delete-merged '!git branch --merged >/tmp/merged-branches && vi /tmp/merged-branches && xargs git branch -d </tmp/merged-branches; rm /tmp/merged-branches'
 
 #cd commands
 alias htdocs="cd ~/../../Applications/MAMP/htdocs"
@@ -53,10 +57,6 @@ alias routes="bundle exec rake routes | grep"
 alias rsp="be rspec --format doc"
 alias rgrep="ps aux | grep rspec"
 
-#Sublime
-alias subl="echo It\'s atom now!"
-alias subl.="echo It\'s atom now!"
-
 #Shut down
 alias die="shutdown now"
 
@@ -64,7 +64,7 @@ alias die="shutdown now"
 alias gulpit="gulp && gulp watch"
 
 #Ruby stuff
-alias _irb="irb"
+alias _irb="command irb"
 alias irb="pry"
 
 #DNS
@@ -72,8 +72,11 @@ alias hosts="atom /etc/hosts"
 alias refresh_dns="sudo dscacheutil -flushcache && sudo killall -HUP mDNSResponder"
 
 #Fuck
+unalias fuck 2>/dev/null # Prevent parse error when reloading file
 eval $(thefuck --alias)
 alias fuck="fuck -r"
+
+alias reload="source ~/.zshrc"
 
 #Tools
 alias devserve="$COMMANDS_PATH/apps/php_serve.sh"
@@ -87,13 +90,13 @@ alias prettyping="$COMMANDS_PATH/apps/prettyping --nolegend"
 
 alias cat="bat"
 
-source "$COMMANDS_PATH/apps/cd.sh"
-
 alias backup="$COMMANDS_PATH/apps/backup.sh"
 
 if [[ $TERM_PROGRAM = 'iTerm.app' ]]; then
   # alias colour="$COMMANDS_PATH/apps/colour.sh"
   source "$COMMANDS_PATH/apps/colour2.sh"
+  source "$COMMANDS_PATH/apps/folder_colour.sh"
+  source "$COMMANDS_PATH/apps/cd.sh"
   source "$COMMANDS_PATH/apps/preexec.sh"
 
   function set_status {
@@ -110,6 +113,8 @@ if [[ $TERM_PROGRAM = 'iTerm.app' ]]; then
   function clear_status {
     export CUSTOM_STATUS=''
   }
+
+  set_folder_colour
 fi
 
 # NVM
@@ -125,6 +130,5 @@ unset nvmAvilable
 autoload -Uz compinit && compinit
 
 get_status
-colour 255 255 255
 
 git config --global core.excludesfile ~/.gitignore_global

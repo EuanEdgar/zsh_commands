@@ -77,6 +77,14 @@ if [[ $installed = 1 ]]; then
 fi
 unset installed
 
+check_if_installed brew
+if [[ $installed = 0 ]]; then
+  if [ ! -e /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
+    brew install zsh-syntax-highlighting
+  fi
+fi
+unset installed
+
 check_if_installed bat
 if [[ $installed = 1 ]]; then
   if [[ $os = "mac" ]]; then
