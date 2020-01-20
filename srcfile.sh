@@ -63,9 +63,18 @@ eval "$(rbenv init -)"
 #Rails commands
 alias be="bundle exec"
 alias rcon="bundle exec rails c"
-alias routes="bundle exec rake routes | grep"
 alias rsp="be rspec --format doc"
 alias rgrep="ps aux | grep rspec"
+routes() {
+  search=$1
+  routes_command="rake routes 2>/dev/null"
+
+  if [[ -n $search ]]; then
+    be $routes_command | grep $search
+  else
+    be $routes_command
+  fi
+}
 
 #Shut down
 alias die="shutdown now"
@@ -102,6 +111,8 @@ alias cat="bat"
 
 alias backup="$COMMANDS_PATH/apps/backup.sh"
 
+source "$COMMANDS_PATH/apps/reverse_find_file.sh"
+
 if [[ $TERM_PROGRAM = 'iTerm.app' ]]; then
   # alias colour="$COMMANDS_PATH/apps/colour.sh"
   source "$COMMANDS_PATH/apps/colour2.sh"
@@ -135,6 +146,23 @@ if [[ !nvmAvilable = 0 ]]; then
   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 fi
 unset nvmAvilable
+
+wrap_node(){
+  program=$1
+  $program(){
+    set_nvm
+    command $program $@
+  }
+}
+
+set_nvm(){
+  nvm_file=$(reverse_find_file .nvm)
+  nvm use $(cat $nvm_file)
+}
+
+wrap_node yarn
+wrap_node node
+wrap_node npx
 
 #AUTROLOAD!
 autoload -Uz compinit && compinit
