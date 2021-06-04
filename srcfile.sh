@@ -62,13 +62,24 @@ eval "$(rbenv init -)"
 
 #Rails commands
 alias be="bundle exec"
-alias rcon="bundle exec rails c"
-alias routes="bundle exec rake routes | grep"
+alias rcon="colour orange; bundle exec rails c; colour prev"
 alias rsp="be rspec --format doc"
 alias rgrep="ps aux | grep rspec"
+routes() {
+  search=$1
+  if [[ -n "$search" ]]; then
+    be rake routes | grep $search
+  else
+    be rake routes
+  fi
+}
+
+# shasum
+alias sha1sum="shasum"
+alias sha256sum="shasum --algorithm 256"
 
 #Shut down
-alias die="shutdown now"
+alias die="sudo shutdown -h now"
 
 #Gulp
 alias gulpit="gulp && gulp watch"
