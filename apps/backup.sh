@@ -29,7 +29,7 @@ restore(){
   if [ -f $file ] && [[ $file =~ (.*)\.bak([0-9]+)?$ ]]; then
     basefile=$(echo "${BASH_REMATCH[1]}")
     filepattern="$basefile.bak*"
-    read -p "This will overwrite $basefile and $(ls $filepattern | wc -l | xargs) backup file(s). Continue? [Y/n] " -r
+    read -p "This will overwrite $basefile and $(ls $filepattern | wc -l | xargs) backup file(s). Continue? ([Y]es/[N]o/[K]eep backup) " -r
     if [ $REPLY = y ] || [ $REPLY = Y ]; then
       mv $file $basefile
       if [ ! -z $(for f in $filepattern; do
@@ -38,6 +38,8 @@ restore(){
       done) ]; then
         rm $filepattern
       fi
+    elif [ $REPLY = k ] || [ $REPLY = K ]; then
+      cp $file $basefile
     fi
   elif [ -f $file ]; then
     echo "Restore file..."
